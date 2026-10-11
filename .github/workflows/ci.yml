@@ -1,0 +1,57 @@
+name: CI
+
+# Continuous Integration: runs on every push to main and on every pull request targeting main.
+# Deployment is NOT done here. Render's "After CI Checks Pass" auto-deploy setting watches this
+# workflow's result for the commit and deploys only if it succeeds (see README.md).
+# Do not add "paths:" filters: if no check runs for a commit, Render will not deploy it.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test (Node 22)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    # Throw-away MongoDB used only by tests/mongo.integration.test.js.
+    # It lives for this job only and is unrelated to your Atlas production database.
+    services:
+      mongodb:
+        image: mongo:7
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --quiet --eval 'db.runCommand({ ping: 1 })'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      NODE_ENV: test
+      TEST_MONGODB_URI: mongodb://127.0.0.1:27017/student_management_test
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run automated tests
+        run: npm test

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Student Management System</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">SMS</span>
+        <span class="brand-name">Student<br>Management</span>
+      </div>
+      <nav class="nav" aria-label="Sections">
+        <a href="#overview" class="nav-link">Overview</a>
+        <a href="#students" class="nav-link">Students</a>
+      </nav>
+      <div class="sidebar-foot">
+        <span class="status-dot" id="health-dot" aria-hidden="true"></span>
+        <span id="health-text">Checking server&hellip;</span>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <h1>Student Records</h1>
+        <p class="subtitle">Deployed through an automated CI/CD pipeline</p>
+      </header>
+
+      <div id="alert" class="alert" role="status" aria-live="polite" hidden></div>
+
+      <section id="overview" class="stats" aria-label="Overview">
+        <div class="stat"><span class="stat-value" id="stat-total">-</span><span class="stat-label">Total students</span></div>
+        <div class="stat"><span class="stat-value" id="stat-courses">-</span><span class="stat-label">Courses</span></div>
+        <div class="stat"><span class="stat-value" id="stat-shown">-</span><span class="stat-label">Shown in table</span></div>
+      </section>
+
+      <section id="students" class="panel" aria-label="Students">
+        <div class="toolbar">
+          <label class="search">
+            <span class="sr-only">Search by name or roll number</span>
+            <input type="search" id="search" placeholder="Search by name or roll number" maxlength="100" autocomplete="off">
+          </label>
+          <button type="button" class="btn btn-primary" id="add-btn">Add student</button>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th><th>Roll no.</th><th>Email</th><th>Course</th><th class="num">Sem</th><th class="actions-col">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+        <p id="state" class="state" hidden></p>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="form-dialog" aria-labelledby="form-title">
+    <form id="student-form" novalidate>
+      <h2 id="form-title">Add student</h2>
+      <p id="form-error" class="form-error" role="alert" hidden></p>
+
+      <label for="fullName">Full name</label>
+      <input id="fullName" name="fullName" type="text" maxlength="100" required autocomplete="off">
+      <span class="field-error" data-for="fullName"></span>
+
+      <label for="rollNumber">Roll number</label>
+      <input id="rollNumber" name="rollNumber" type="text" maxlength="30" required autocomplete="off">
+      <span class="field-error" data-for="rollNumber"></span>
+
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" maxlength="254" required autocomplete="off">
+      <span class="field-error" data-for="email"></span>
+
+      <label for="course">Course</label>
+      <input id="course" name="course" type="text" maxlength="100" required autocomplete="off">
+      <span class="field-error" data-for="course"></span>
+
+      <label for="semester">Semester</label>
+      <select id="semester" name="semester" required>
+        <option value="">Select semester</option>
+        <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>
+        <option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option>
+      </select>
+      <span class="field-error" data-for="semester"></span>
+
+      <div class="dialog-actions">
+        <button type="button" class="btn" id="cancel-btn">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="save-btn">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="delete-dialog" aria-labelledby="delete-title">
+    <h2 id="delete-title">Delete student?</h2>
+    <p id="delete-text"></p>
+    <div class="dialog-actions">
+      <button type="button" class="btn" id="delete-cancel">Cancel</button>
+      <button type="button" class="btn btn-danger" id="delete-confirm">Delete</button>
+    </div>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
