@@ -1,7 +1,7 @@
-# Student Management System - Automated CI/CD Pipeline
+# Student Management System - Automated CI/CD Pipeline 
 
 A full-stack Student Management System (Node.js, Express, MongoDB Atlas) with an automated
-CI/CD pipeline: **GitHub Actions** runs the tests on every change and **Render** deploys the
+Continous integration/Continous Deployment pipeline: **GitHub Actions** runs the tests on every change and **Render** deploys the
 app to a public HTTPS URL only when those tests pass.
 
 > Course: Cloud Automation Tools - Topic 3: Automated CI/CD Pipeline for a Student Management System
